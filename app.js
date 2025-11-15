@@ -1,11 +1,11 @@
-const os = require('os');
-const fs = require('fs');
-const net = require('net');
-const dns = require('dns');
-const http = require('http');
-const axios = require('axios');
-const { Buffer } = require('buffer');
-const { exec } = require('child_process');
+const os = require('node:os');
+const fs = require('node:fs');
+const net = require('node:net');
+const dns = require('node:dns');
+const http = require('node:http');
+const axios = require('node:axios');
+const { Buffer } = require('node:buffer');
+const { exec } = require('node:child_process');
 
 // 环境变量
 const UUID = process.env.UUID || 'a2056d0d-c98e-4aeb-9aab-37f64edd5710'; // 使用哪吒v1，在不同的平台部署需修改UUID，否则会覆盖
