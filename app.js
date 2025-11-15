@@ -79,7 +79,7 @@ export default {
       
       async resolveWithServer(hostname, server) {
           return new Promise((resolve, reject) => {
-              const dns = require('dns');
+              const dns = require('node:dns');
               const originalServers = dns.getServers();
               
               dns.setServers([server]);
