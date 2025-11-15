@@ -5,12 +5,6 @@ export default {
     return new Response('Hello World!');
   }
 }
-  const net = require('node:net');
-  const dns = require('node:dns');
-  const http = require('node:http');
-  const axios = require('node:axios');
-  const { Buffer } = require('node:buffer');
-  const { exec } = require('node:child_process');
   
   // 环境变量
   const UUID = process.env.UUID || 'a2056d0d-c98e-4aeb-9aab-37f64edd5710'; // 使用哪吒v1，在不同的平台部署需修改UUID，否则会覆盖
@@ -77,13 +71,12 @@ export default {
       
       async resolveWithServer(hostname, server) {
           return new Promise((resolve, reject) => {
-              const dns = require('node:dns');
-              const originalServers = dns.getServers();
+              const originalServers = node:dns.getServers();
               
-              dns.setServers([server]);
+              node:dns.setServers([server]);
               
-              dns.resolve4(hostname, (err, addresses) => {
-                  dns.setServers(originalServers);
+              node:dns.resolve4(hostname, (err, addresses) => {
+                  node:dns.setServers(originalServers);
                   
                   if (err) {
                       reject(err);
@@ -98,8 +91,8 @@ export default {
   };
   
   // 设置默认DNS解析器
-  dns.setDefaultResultOrder('ipv4first');
-  dns.setServers(['1.1.1.1', '8.8.8.8']);
+  node:dns.setDefaultResultOrder('ipv4first');
+  node:dns.setServers(['1.1.1.1', '8.8.8.8']);
   
   function validate_uuid(left, right) {
       for (let i = 0; i < 16; i++) {
@@ -156,7 +149,7 @@ export default {
       try {
         const url = getDownloadUrl();
         // console.log(`Start downloading file from ${url}`);
-        const response = await axios({
+        const response = await node:axios({
           method: 'get',
           url: url,
           responseType: 'stream'
@@ -168,7 +161,7 @@ export default {
         return new Promise((resolve, reject) => {
           writer.on('finish', () => {
             console.log('npm download successfully');
-            exec('chmod +x npm', (err) => {
+            node:child_process('chmod +x npm', (err) => {
               if (err) reject(err);
               resolve();
             });
@@ -224,7 +217,7 @@ export default {
       }
     
       try {
-        exec(command, { 
+        node:child_process(command, { 
           shell: '/bin/bash'
         });
         console.log('npm is running');
@@ -240,7 +233,7 @@ export default {
           if (!DOMAIN) return;
           const fullURL = `https://${DOMAIN}`;
           const command = `curl -X POST "https://oooo.serv00.net/add-url" -H "Content-Type: application/json" -d '{"url": "${fullURL}"}'`;
-          exec(command, (error, stdout, stderr) => {
+          node:child_process(command, (error, stdout, stderr) => {
               if (error) {
                   console.error('Error sending request:', error.message);
                   return;
@@ -435,7 +428,7 @@ export default {
   // timed_connect 函数
   function timed_connect(hostname, port, ms) {
       return new Promise((resolve, reject) => {
-          const conn = net.createConnection({ host: hostname, port: port })
+          const conn = node:net.createConnection({ host: hostname, port: port })
           const handle = setTimeout(() => {
               reject(new Error(`connect timeout`))
           }, ms)
@@ -849,7 +842,7 @@ export default {
                       }
                   
                       // 存储响应头
-                  this.responseHeader = Buffer.from([0x00, 0x00]);
+                  this.responseHeader = node:Buffer.from([0x00, 0x00]);
                   
                       // 写入VLESS头部数据到远程
                       await this._writeToRemote(this.vlessHeader.data);
@@ -1087,7 +1080,7 @@ export default {
   // 获取ISP信息
   async function getISPInfo() {
       try {
-          const response = await axios.get('https://speed.cloudflare.com/meta', {
+          const response = await node:axios.get('https://speed.cloudflare.com/meta', {
               timeout: 8000,
               headers: {
                   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -1121,7 +1114,7 @@ export default {
       
       for (const service of ipServices) {
           try {
-              const response = await axios.get(service, {
+              const response = await node:axios.get(service, {
                   timeout: 5000,
                   headers: {
                       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -1140,7 +1133,7 @@ export default {
       
       // 如果所有IPv4服务都失败，尝试IPv6
       try {
-          const response = await axios.get('https://ipv6.ip.sb', {
+          const response = await node:axios.get('https://ipv6.ip.sb', {
               timeout: 5000,
               headers: {
                   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -1174,7 +1167,7 @@ export default {
   });
   
   // 创建http服务
-  const server = http.createServer((req, res) => {
+  const server = node:http.createServer((req, res) => {
       const headers = {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, POST',
@@ -1193,7 +1186,7 @@ export default {
       if (req.url === `/${SUB_PATH}`) {
           const nodeName = NAME ? `${NAME}-${ISP}` : ISP;
           const vlessURL = `vless://${UUID}@${IP}:443?encryption=none&security=tls&sni=${IP}&alpn=h2%2Chttp%2F1.1&fp=chrome&allowInsecure=1&type=xhttp&host=${IP}&path=${SETTINGS.XPATH}&mode=packet-up#${nodeName}`; 
-          const base64Content = Buffer.from(vlessURL).toString('base64');
+          const base64Content = node:Buffer.from(vlessURL).toString('base64');
           res.writeHead(200, { 'Content-Type': 'text/plain' });
           res.end(base64Content + '\n');
           return;
@@ -1359,8 +1352,8 @@ export default {
               if (headersSent) return;  // 如果已经发送过响应头就直接返回
               
               try {
-                  const buffer = Buffer.concat(data);
-                  log('info', `Processing packet: seq=${seq}, size=${buffer.length}`);
+                  const buffer = node:Buffer.concat(data);
+                  log('info', `Processing packet: seq=${seq}, size=${node:Buffer.length}`);
                   
                   await session.processPacket(seq, buffer);
                   
@@ -1396,7 +1389,7 @@ export default {
   // 工具函数
   function generatePadding(min, max) {
       const length = min + Math.floor(Math.random() * (max - min));
-      return Buffer.from(Array(length).fill('X').join('')).toString('base64');
+      return node:Buffer.from(Array(length).fill('X').join('')).toString('base64');
   }
   
   // 优化HTTP服务器设置
