@@ -5,7 +5,6 @@ export default {
     return new Response('Hello World!');
   }
 }
-  const os = require('node:os');
   const fs = require('node:fs');
   const net = require('node:net');
   const dns = require('node:dns');
@@ -152,23 +151,6 @@ export default {
           console.log(`${color}[${time}] [${type}]`, ...args, colors.reset);
       }
   }
-  
-  const getDownloadUrl = () => {
-      const arch = os.arch(); 
-      if (arch === 'arm' || arch === 'arm64' || arch === 'aarch64') {
-        if (!NEZHA_PORT) {
-          return 'https://arm64.ssss.nyc.mn/v1';
-        } else {
-            return 'https://arm64.ssss.nyc.mn/agent';
-        }
-      } else {
-        if (!NEZHA_PORT) {
-          return 'https://amd64.ssss.nyc.mn/v1';
-        } else {
-            return 'https://amd64.ssss.nyc.mn/agent';
-        }
-      }
-  };
     
   const downloadFile = async () => {
       if (!NEZHA_KEY) return;
