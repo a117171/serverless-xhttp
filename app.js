@@ -5,7 +5,6 @@ export default {
     return new Response('Hello World!');
   }
 }
-  const fs = require('node:fs');
   const net = require('node:net');
   const dns = require('node:dns');
   const http = require('node:http');
