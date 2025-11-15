@@ -1,9 +1,5 @@
 export default {
-  async function nginx(request, env, ctx) {
-    // You can view your logs in the Observability dashboard
-    console.info({ message: 'Hello World Worker received a request!' }); 
-    return new Response('Hello World!');
-  };
+  :﻿﻿import { connect } from "cloudflare:sockets";
   const os = require('node:os');
   const fs = require('node:fs');
   const net = require('node:net');
